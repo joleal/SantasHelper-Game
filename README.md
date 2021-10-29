@@ -1,2 +1,15 @@
 # SantasLitleHelper-Game
-M1 Project - Game
+
+##Description
+
+##MVP
+
+##Backlog
+
+##Data structure
+
+##States and States Trasitions
+
+##Task
+
+##Additional Links
