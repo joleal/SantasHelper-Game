@@ -35,8 +35,26 @@ Definition of the different states and their transition (transition functions)
 
 ## Task
 
+- main - buildDom
+- main - buildSplashScreen
+- main - addEventListener
+- main - buildGameScreen
+- main - buildGameOverScreen
+- game - startLoop
+- game - buildCanvas
+- game - updateCanvas
+- game - drawCanvas
+- bag - draw
+- bag - move
+- game - addbag
+- objects - draw
+- objects - move
+- game - addobjects
+- game - checkCollision
+- game - GameOver
+- game - addEventListener
 
 ## Additional Links
-###Trello
-###Git
-###Slides
+### Trello
+### Git
+### Slides
