@@ -1,5 +1,5 @@
 # Santa's Little Helper
- 
+
 ## Description
 Santa's Little helper is a game where the player has to help Santa fill his bag with presents. To do so, the player has to catch christmas presents that are falling from the top of the screen. The game ends when the player catches an object that no child wants to receive.
 
@@ -11,15 +11,32 @@ Santa's Little helper is a game where the player has to help Santa fill his bag 
 - difficulty increases after catch 10 presents
 
 ## Backlog
+- add music
 - Level up, where Santa delivers the presents
 
 ## Data structure
+### main.js
+- SplashScreen () {}
+- GameScreen () {}
+- GameOverScreen () {}
 
+### game.js
+
+### bag.js
+
+### objects.js
 
 ## States and States Trasitions
+Definition of the different states and their transition (transition functions)
 
+- splashScreen
+- gameScreen
+- gameOverScreen
 
 ## Task
 
 
 ## Additional Links
+###Trello
+###Git
+###Slides
