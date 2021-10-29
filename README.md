@@ -1,15 +1,15 @@
 # SantasLitleHelper-Game
 
-##Description
+## Description
 
-##MVP
+## MVP
 
-##Backlog
+## Backlog
 
-##Data structure
+## Data structure
 
-##States and States Trasitions
+## States and States Trasitions
 
-##Task
+## Task
 
-##Additional Links
+## Additional Links
