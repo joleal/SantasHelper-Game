@@ -1,0 +1,46 @@
+body{
+    background-color: #b32328;
+    color: white;
+    font-family: 'Mountains of Christmas', cursive;
+}
+
+.center {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.button{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    color: white;
+    text-transform: uppercase;
+    background: #859238;
+    padding: 20px;
+    border-color: white;
+    border-width: 5px;
+    border-radius: 10px;
+    font-size: 20px;
+}
+
+#myCanvas{
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+#instructions-box{
+    text-align: center;
+    margin-bottom: 40px;
+    margin-top: 40px
+}
+
+h1{
+    font-size: 40px;
+}
+
