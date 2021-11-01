@@ -57,16 +57,20 @@ log.src = './images/log1.png';
 let pinha = new Image();
 pinha.src = './images/pinha.png'
 
-let allPresents = [present1, present2, present3, present4, present5, present6, present7, present8, present9, present10, present11];
-let present = allPresents[Math.floor(Math.random()*allPresents.length)];
-let allNoPresents = [rock, log, pinha];
-let noPresent = allNoPresents[Math.floor(Math.random()*allNoPresents.length)];
+let allObjects = [rock, log, pinha, present1, present2, present3, present4, present5, present6, present7, present8, present9, present10, present11];
+let randomObject = [
+    {
+        x: Math.floor(Math.random()*canvas.width),
+        y: 0,
+        img: allObjects[Math.floor(Math.random()*allObjects.length)],
+    },
+];
 
-//VARIABLES
 let intervalId = 0;
 let gameOver = false;
 let isLeft = false, isRight = false;
 let santaX = 400, santaY = 360, incX = 5;
+let incY = 5;
 
 //GAME PAGE
 function handleStart() {
@@ -75,7 +79,8 @@ function handleStart() {
     gamePage.style.display = 'block';
     draw();
     animateSanta();
-
+    fallingObjects(); //santa stop walk and objects don't fall
+    
      //GAMEOVER
     if (gameOver) {
         cancelAnimationFrame(intervalId);
@@ -105,18 +110,18 @@ function animateSanta() {
 }
 
 //FALLING OBJECTS
-/*function () {
-if(fallingObj.type =='present'){
-    ctx.drawImage(present, present.x, present.y)        
-}  
-if(fallingObj.type=='noPresent'){
-    ctx.drawImage(noPresent, noPresent.x, noPresent.y)        
-}  
+function fallingObjects() {
+
+    for (let i = 0; i < allObjects.length; i++) {
+        ctx.drawImage(randomObject[i].img, randomObject[i].x, randomObject[i].y)
+        randomObject[i].y += incY;
+    }
 }
-*/
 
+//COLLISION
+function collision() {
 
-
+}
 
 window.addEventListener('load', () => {
     gamePage.style.display = 'none'; 
