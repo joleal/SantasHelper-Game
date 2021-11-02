@@ -64,7 +64,7 @@ let music = new Audio();
 music.src = './SantasToyFactory.mp3';
 music.volume = 0.1;
 let auch = new Audio();
-auch.src = './auch.m4a'
+auch.src = './auch.mp3'
 auch.volume = 0.1;
 
 //VARIABLES
@@ -118,7 +118,6 @@ function handleStart() {
     restartBtn.style.display = 'none';
     gameOverPage.style.display = 'none';
     gamePage.style.display = 'block';
-    lives = 3;
     music.play()
     draw();
     animateSanta();
@@ -139,7 +138,7 @@ function handleStart() {
         }
         //COLLISION WITH PRESENT TO INCREASE SCORE
         if(randomObject[i].present == true) {
-           if(randomObject[i].y >= santaY+20 && randomObject[i].y <= santaY+30 && (randomObject[i].x >= santaX) && (randomObject[i].x <= santaX + 140)) {
+           if(randomObject[i].y >= santaY && randomObject[i].y <= santaY+200 && (randomObject[i].x >= santaX) && (randomObject[i].x <= santaX + 100)) {
                score ++;
                randomObject[i].y = canvas.height + 100
            }        
@@ -149,10 +148,13 @@ function handleStart() {
         
         //COLLISION WITH NO PRESENT TO GAME OVER
         if(randomObject[i].present == false) {
-            if(randomObject[i].y >= santaY+20 && randomObject[i].y <= santaY+30 && (randomObject[i].x >= santaX) && (randomObject[i].x <= santaX + 140)) {
-                auch.play() //dont work
-                lives -- //dont work
-                gameOver = true
+            if(randomObject[i].y >= santaY && randomObject[i].y <= santaY+200 && (randomObject[i].x >= santaX) && (randomObject[i].x <= santaX + 100)) {
+                auch.play() 
+                lives -- 
+                randomObject[i].y = canvas.height + 100
+                if (lives == 0) {
+                    gameOver = true;
+                }
             }
         }
    } 
