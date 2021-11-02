@@ -46,13 +46,17 @@ h1{
 
  #gameover-page h1{
     text-align: center;
-    font-size: 70px;
+    font-size: 60px;
  }
-
+ #gameover-page h3{
+    text-align: center;
+    font-size: 40px;
+ }
  #gameover-page img{
     display: block;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 60px;
+    margin-bottom: 50px;
     border-radius: 50px;
  }
+ 

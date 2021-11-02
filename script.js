@@ -12,6 +12,8 @@ let gameOverPage = document.querySelector('#gameover-page')
 let startBtn = document.querySelector('#start-btn');
 let restartBtn = document.querySelector('#restart');
 
+let finalScore = document.querySelector('#final-score');
+
 //IMAGES
 let background = new Image();
 background.src = './images/bg.jpg';
@@ -61,6 +63,9 @@ pinha.src = './images/pinha.png'
 let music = new Audio();
 music.src = './SantasToyFactory.mp3';
 music.volume = 0.1;
+let auch = new Audio();
+auch.src = './auch.m4a'
+auch.volume = 0.1;
 
 //VARIABLES
 let noPresents = [rock, log, pinha]
@@ -104,6 +109,7 @@ let isLeft = false, isRight = false;
 let santaX = 400, santaY = 360, incX = 5;
 let incY = 2;
 let score = 0;
+let lives = 3;
 
 //GAME PAGE
 function handleStart() {
@@ -112,6 +118,7 @@ function handleStart() {
     restartBtn.style.display = 'none';
     gameOverPage.style.display = 'none';
     gamePage.style.display = 'block';
+    lives = 3;
     music.play()
     draw();
     animateSanta();
@@ -119,6 +126,7 @@ function handleStart() {
     ctx.fillStyle = 'black'
     ctx.font = '30px verdana'
     ctx.fillText(`Score: ${score}`, 10, 30)
+    ctx.fillText(`Lives: ${lives}`, 830, 30)
 
     for (let i = 0; i < randomObject.length; i++) {
 
@@ -134,26 +142,35 @@ function handleStart() {
            if(randomObject[i].y >= santaY+20 && randomObject[i].y <= santaY+30 && (randomObject[i].x >= santaX) && (randomObject[i].x <= santaX + 140)) {
                score ++;
                randomObject[i].y = canvas.height + 100
-           }
+           }        
         }
+
+      
         
         //COLLISION WITH NO PRESENT TO GAME OVER
         if(randomObject[i].present == false) {
             if(randomObject[i].y >= santaY+20 && randomObject[i].y <= santaY+30 && (randomObject[i].x >= santaX) && (randomObject[i].x <= santaX + 140)) {
+                auch.play() //dont work
+                lives -- //dont work
                 gameOver = true
             }
         }
    } 
-    
+    //CHANGE IMAGE IF SCORE > 2
+    /*if (score >= 2) {
+        drawImage(santaR)
+        }
+*/
+  
      //GAMEOVER
-    if (gameOver) {
+    if (gameOver) {   
         cancelAnimationFrame(intervalId);
         music.pause();
         startPage.style.display = 'none';
         gamePage.style.display = 'none';
-        restartBtn.style.display = 'block';
         gameOverPage.style.display = 'block';
-        finalscore.textContent = `You caught ${score} presents`; //not appearing       
+        restartBtn.style.display = 'block';
+        finalScore.textContent = `You caught ${score} presents`;  
         gameOver = false;
        }
        else {
