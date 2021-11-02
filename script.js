@@ -57,6 +57,11 @@ log.src = './images/log1.png';
 let pinha = new Image();
 pinha.src = './images/pinha.png'
 
+//AUDIO
+let music = new Audio();
+music.src = './SantasToyFactory.mp3';
+music.volume = 0.1;
+
 //VARIABLES
 let noPresents = [rock, log, pinha]
 let allPresents = [present1, present2, present3, present4, present5, present6, present7, present8, present9, present10, present11];
@@ -107,6 +112,7 @@ function handleStart() {
     restartBtn.style.display = 'none';
     gameOverPage.style.display = 'none';
     gamePage.style.display = 'block';
+    music.play()
     draw();
     animateSanta();
     
@@ -142,12 +148,12 @@ function handleStart() {
      //GAMEOVER
     if (gameOver) {
         cancelAnimationFrame(intervalId);
+        music.pause();
         startPage.style.display = 'none';
         gamePage.style.display = 'none';
         restartBtn.style.display = 'block';
         gameOverPage.style.display = 'block';
-        finalscore.textContent = `You caught ${score} presents`;
-        
+        finalscore.textContent = `You caught ${score} presents`; //not appearing       
         gameOver = false;
        }
        else {
