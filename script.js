@@ -122,9 +122,9 @@ function handleStart() {
         }
         //COLLISION WITH PRESENT TO INCREASE SCORE
         if(randomObject[i].present == true) {
-           if(randomObject[i].y >= santaY+20 && randomObject[i].y <= santaY+30 && (randomObject[i].x >= santaX) && (randomObject[i].x <= santaX)+ 140) {
+           if(randomObject[i].y >= santaY+20 && randomObject[i].y <= santaY+30 && (randomObject[i].x >= santaX) && (randomObject[i].x <= santaX + 140)) {
                score ++;
-               randomObject[i].y = canvas.height + 150
+               randomObject[i].y = canvas.height + 100
            }
         }
         
@@ -139,10 +139,10 @@ function handleStart() {
      //GAMEOVER
     if (gameOver) {
         cancelAnimationFrame(intervalId);
-        gameOverPage.style.display = 'block';
-        finalscore.textContent = `You caught ${score} presents0`;
         startPage.style.display = 'none';
         gamePage.style.display = 'none';
+        gameOverPage.style.display = 'block';
+        finalscore.textContent = `You caught ${score} presents`;
         gameOver = false;
        }
        else {
@@ -168,6 +168,13 @@ function animateSanta() {
     }
 }
 
+//RESTART
+function restart(){
+    gameOverPage.style.display = 'none'
+    gameOver = false
+    score = 0
+    handleStart()
+}
 
 window.addEventListener('load', () => {
     gamePage.style.display = 'none'; 
