@@ -64,13 +64,34 @@ let randomObject = [
         y: 0,
         img: allObjects[Math.floor(Math.random()*allObjects.length)],
     },
+    {
+        x: Math.floor(Math.random()*canvas.width),
+        y: -150,
+        img: allObjects[Math.floor(Math.random()*allObjects.length)],
+    },
+    {
+        x: Math.floor(Math.random()*canvas.width),
+        y: -300,
+        img: allObjects[Math.floor(Math.random()*allObjects.length)],
+    },
+    {
+        x: Math.floor(Math.random()*canvas.width),
+        y: -400,
+        img: allObjects[Math.floor(Math.random()*allObjects.length)],
+    },
+    {
+        x: Math.floor(Math.random()*canvas.width),
+        y: -600,
+        img: allObjects[Math.floor(Math.random()*allObjects.length)],
+    }
+    
 ];
 
 let intervalId = 0;
 let gameOver = false;
 let isLeft = false, isRight = false;
 let santaX = 400, santaY = 360, incX = 5;
-let incY = 5;
+let incY = 2;
 
 //GAME PAGE
 function handleStart() {
@@ -79,7 +100,17 @@ function handleStart() {
     gamePage.style.display = 'block';
     draw();
     animateSanta();
-    fallingObjects(); //santa stop walk and objects don't fall
+
+    for (let i = 0; i < randomObject.length; i++) {
+
+        ctx.drawImage(randomObject[i].img, randomObject[i].x, randomObject[i].y)
+        randomObject[i].y = randomObject[i].y + incY;
+
+        if(randomObject[i].y > canvas.height) {
+            randomObject[i].y = -300
+            randomObject[i].x = [Math.floor(Math.random()*canvas.width)]
+        }
+   } 
     
      //GAMEOVER
     if (gameOver) {
@@ -109,19 +140,8 @@ function animateSanta() {
     }
 }
 
-//FALLING OBJECTS
-function fallingObjects() {
-
-    for (let i = 0; i < allObjects.length; i++) {
-        ctx.drawImage(randomObject[i].img, randomObject[i].x, randomObject[i].y)
-        randomObject[i].y += incY;
-    }
-}
-
 //COLLISION
-function collision() {
 
-}
 
 window.addEventListener('load', () => {
     gamePage.style.display = 'none'; 

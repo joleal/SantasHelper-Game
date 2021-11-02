@@ -16,7 +16,7 @@ Santa's helper is a Game where the player has to help Santa fill his Santa with 
 - Level up, where Santa delivers the presents
 
 ## Data structure
-### Main.js
+### Script.js
 - StartScreen () {}
 - GameScreen () {}
 - GameOverScreen () {}
@@ -30,14 +30,14 @@ Santa's helper is a Game where the player has to help Santa fill his Santa with 
 ## States and States Trasitions
 Definition of the different states and their transition (transition functions)
 
-- SplashScreen
+- StartScreen
 - GameScreen
 - GameOverScreen
 
 ## Task
 
 - Main - buildDom
-- Main - buildSplashScreen
+- Main - buildStartScreen
 - Main - addEventListener
 - Main - buildGameScreen
 - Main - buildGameOverScreen
