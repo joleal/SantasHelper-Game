@@ -57,34 +57,39 @@ log.src = './images/log1.png';
 let pinha = new Image();
 pinha.src = './images/pinha.png'
 
-let allObjects = [rock, log, pinha, present1, present2, present3, present4, present5, present6, present7, present8, present9, present10, present11];
+let noPresents = [rock, log, pinha]
+let allPresents = [present1, present2, present3, present4, present5, present6, present7, present8, present9, present10, present11];
 let randomObject = [
     {
         x: Math.floor(Math.random()*canvas.width),
-        y: 0,
-        img: allObjects[Math.floor(Math.random()*allObjects.length)],
-    },
-    {
-        x: Math.floor(Math.random()*canvas.width),
         y: -150,
-        img: allObjects[Math.floor(Math.random()*allObjects.length)],
+        img: noPresents[Math.floor(Math.random()*noPresents.length)],
+        present: false
     },
     {
         x: Math.floor(Math.random()*canvas.width),
         y: -300,
-        img: allObjects[Math.floor(Math.random()*allObjects.length)],
+        img: allPresents[Math.floor(Math.random()*allPresents.length)],
+        present: true
+    },
+    {
+        x: Math.floor(Math.random()*canvas.width),
+        y: 0,
+        img: noPresents[Math.floor(Math.random()*noPresents.length)],
+        present: false
     },
     {
         x: Math.floor(Math.random()*canvas.width),
         y: -400,
-        img: allObjects[Math.floor(Math.random()*allObjects.length)],
+        img: allPresents[Math.floor(Math.random()*allPresents.length)],
+        present: true
     },
     {
         x: Math.floor(Math.random()*canvas.width),
         y: -600,
-        img: allObjects[Math.floor(Math.random()*allObjects.length)],
-    }
-    
+        img: allPresents[Math.floor(Math.random()*allPresents.length)],
+        present: true
+    }    
 ];
 
 let intervalId = 0;
@@ -92,6 +97,7 @@ let gameOver = false;
 let isLeft = false, isRight = false;
 let santaX = 400, santaY = 360, incX = 5;
 let incY = 2;
+let score = 0;
 
 //GAME PAGE
 function handleStart() {
@@ -100,6 +106,10 @@ function handleStart() {
     gamePage.style.display = 'block';
     draw();
     animateSanta();
+    
+    ctx.fillStyle = 'black'
+    ctx.font = '30px verdana'
+    ctx.fillText(`Score: ${score}`, 10, 30)
 
     for (let i = 0; i < randomObject.length; i++) {
 
@@ -110,11 +120,29 @@ function handleStart() {
             randomObject[i].y = -300
             randomObject[i].x = [Math.floor(Math.random()*canvas.width)]
         }
+        //COLLISION WITH PRESENT TO INCREASE SCORE
+        if(randomObject[i].present == true) {
+           if(randomObject[i].y >= santaY+20 && randomObject[i].y <= santaY+30 && (randomObject[i].x >= santaX) && (randomObject[i].x <= santaX)+ 140) {
+               score ++;
+               randomObject[i].y = canvas.height + 150
+           }
+        }
+        
+        //COLLISION WITH NO PRESENT TO GAME OVER
+        if(randomObject[i].present == false) {
+            if(randomObject[i].y >= santaY+20 && randomObject[i].y <= santaY+30 && (randomObject[i].x >= santaX) && (randomObject[i].x <= santaX + 140)) {
+                gameOver = true
+            }
+        }
    } 
     
      //GAMEOVER
     if (gameOver) {
         cancelAnimationFrame(intervalId);
+        gameOverPage.style.display = 'block';
+        finalscore.textContent = `You caught ${score} presents0`;
+        startPage.style.display = 'none';
+        gamePage.style.display = 'none';
         gameOver = false;
        }
        else {
@@ -139,8 +167,6 @@ function animateSanta() {
         santaX = santaX + incX;
     }
 }
-
-//COLLISION
 
 
 window.addEventListener('load', () => {
