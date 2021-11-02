@@ -47,8 +47,8 @@ let present10 = new Image();
 present10.src = './images/p10.png';
 let present11 = new Image();
 present11.src = './images/p11.png';
-let bonus = new Image();
-bonus.src = './images/pbonus.png';
+/*let bonus = new Image();
+bonus.src = './images/pbonus.png';*/
 
 let rock = new Image();
 rock.src = './images/rock-50x50.png';
@@ -103,6 +103,8 @@ let score = 0;
 function handleStart() {
     startBtn.style.display = 'none';
     startPage.style.display = 'none';
+    restartBtn.style.display = 'none';
+    gameOverPage.style.display = 'none';
     gamePage.style.display = 'block';
     draw();
     animateSanta();
@@ -141,8 +143,10 @@ function handleStart() {
         cancelAnimationFrame(intervalId);
         startPage.style.display = 'none';
         gamePage.style.display = 'none';
+        restartBtn.style.display = 'block';
         gameOverPage.style.display = 'block';
         finalscore.textContent = `You caught ${score} presents`;
+        
         gameOver = false;
        }
        else {
@@ -173,6 +177,7 @@ function restart(){
     gameOverPage.style.display = 'none'
     gameOver = false
     score = 0
+    santaX = 400, santaY = 360
     handleStart()
 }
 
