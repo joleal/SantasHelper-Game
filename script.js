@@ -57,6 +57,7 @@ log.src = './images/log1.png';
 let pinha = new Image();
 pinha.src = './images/pinha.png'
 
+//VARIABLES
 let noPresents = [rock, log, pinha]
 let allPresents = [present1, present2, present3, present4, present5, present6, present7, present8, present9, present10, present11];
 let randomObject = [

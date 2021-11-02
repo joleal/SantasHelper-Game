@@ -16,16 +16,28 @@ Santa's helper is a Game where the player has to help Santa fill his Santa with 
 - Level up, where Santa delivers the presents
 
 ## Data structure
-### Script.js
-- StartScreen () {}
-- GameScreen () {}
-- GameOverScreen () {}
 
-### Game.js
+### index.html
+<section id = "start-page">
+<section id = "game">
+<section id = "gameover-page">
 
-### Santa.js
+### script.js
+- Canvas
+- DOM pages
+- DOM buttons
+- Images
+- Variables
+- handleStart () {}
+- draw () {}
+- animateSanta () {}
+- restart () {}
+- Event Listeners () {}
 
-### Objects.js
+### style.css
+- Start page
+- Game page
+- Game over page
 
 ## States and States Trasitions
 Definition of the different states and their transition (transition functions)
@@ -47,7 +59,6 @@ Definition of the different states and their transition (transition functions)
 - Game - drawCanvas
 - Santa - draw
 - Santa - move
-- Game - addbag
 - Objects - draw
 - Objects - move
 - Game - addobjects
