@@ -186,12 +186,28 @@ function animateSanta() {
             ctx.drawImage(santaL, santaX, santaY)
         }
     }
+    else if (isLeft && santaX == 0) {
+        if (score < 2) {
+        ctx.drawImage(santaEmptyL, santaX, santaY)
+        }
+        else if (score >= 2) {
+        ctx.drawImage(santaL, santaX, santaY)   
+        }
+    }
     if (isRight && santaX < canvas.width-santaEmptyR.width) {
         ctx.drawImage(santaEmptyR, santaX, santaY)
         santaX = santaX + incX;
         if(score >= 2){
         ctx.drawImage(santaR, santaX, santaY)
        }
+    }
+    else if (isRight && santaX == canvas.width-santaEmptyR.width) {
+        if (score < 2) {
+        ctx.drawImage(santaEmptyR, santaX, santaY)
+        }
+        else if (score >= 2) {
+        ctx.drawImage(santaR, santaX, santaY)   
+        }
     }
     if (!isLeft && !isRight){
         if (score >= 2) {
