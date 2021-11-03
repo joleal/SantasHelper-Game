@@ -143,9 +143,7 @@ function handleStart() {
                randomObject[i].y = canvas.height + 100
            }        
         }
-
-      
-        
+       
         //COLLISION WITH NO PRESENT TO GAME OVER
         if(randomObject[i].present == false) {
             if(randomObject[i].y >= santaY && randomObject[i].y <= santaY+200 && (randomObject[i].x >= santaX) && (randomObject[i].x <= santaX + 100)) {
@@ -158,12 +156,7 @@ function handleStart() {
             }
         }
    } 
-    //CHANGE IMAGE IF SCORE > 2
-    /*if (score >= 2) {
-        drawImage(santaR)
-        }
-*/
-  
+
      //GAMEOVER
     if (gameOver) {   
         cancelAnimationFrame(intervalId);
@@ -182,19 +175,31 @@ function handleStart() {
 
 function draw() {
     ctx.drawImage (background, 0, 0);
-    ctx.drawImage (santaEmptyR, santaX, santaY);
 }
 
 //ANIMATE SANTA
 function animateSanta() {
     if (isLeft && santaX > 0) {
-      //ctx.clearRect (santaX, santaY, santaEmptyR.width, santaEmptyR.height)
         ctx.drawImage(santaEmptyL, santaX, santaY)
         santaX = santaX - incX;
+        if(score >= 2){
+            ctx.drawImage(santaL, santaX, santaY)
+        }
     }
     if (isRight && santaX < canvas.width-santaEmptyR.width) {
         ctx.drawImage(santaEmptyR, santaX, santaY)
         santaX = santaX + incX;
+        if(score >= 2){
+        ctx.drawImage(santaR, santaX, santaY)
+       }
+    }
+    if (!isLeft && !isRight){
+        if (score >= 2) {
+            ctx.drawImage(santaR, santaX, santaY)
+        }
+        else {
+            ctx.drawImage (santaEmptyR, santaX, santaY);
+        }
     }
 }
 
