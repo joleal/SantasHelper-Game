@@ -203,6 +203,7 @@ function restart(){
     gameOverPage.style.display = 'none'
     gameOver = false
     score = 0
+    lives = 3
     santaX = 400, santaY = 360
     handleStart()
 }
