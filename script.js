@@ -61,10 +61,10 @@ pinha.src = './images/pinha.png'
 
 //AUDIO
 let music = new Audio();
-music.src = './SantasToyFactory.mp3';
+music.src = './audio/SantasToyFactory.mp3';
 music.volume = 0.1;
 let auch = new Audio();
-auch.src = './auch.mp3'
+auch.src = './audio/auch.mp3'
 auch.volume = 0.1;
 
 //VARIABLES
