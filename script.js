@@ -76,34 +76,52 @@ let allPresents = [present1, present2, present3, present4, present5, present6, p
 let randomObject = [
     {
         x: Math.floor(Math.random()*canvas.width),
-        y: -150,
-        img: noPresents[Math.floor(Math.random()*noPresents.length)],
-        present: false
-    },
-    {
-        x: Math.floor(Math.random()*canvas.width),
-        y: -300,
-        img: allPresents[Math.floor(Math.random()*allPresents.length)],
-        present: true
-    },
-    {
-        x: Math.floor(Math.random()*canvas.width),
         y: 0,
         img: noPresents[Math.floor(Math.random()*noPresents.length)],
         present: false
     },
     {
         x: Math.floor(Math.random()*canvas.width),
-        y: -400,
+        y: -100,
         img: allPresents[Math.floor(Math.random()*allPresents.length)],
         present: true
     },
     {
         x: Math.floor(Math.random()*canvas.width),
-        y: -600,
+        y: -200,
+        img: noPresents[Math.floor(Math.random()*noPresents.length)],
+        present: false
+    },
+    {
+        x: Math.floor(Math.random()*canvas.width),
+        y: -290,
         img: allPresents[Math.floor(Math.random()*allPresents.length)],
         present: true
-    }    
+    },
+    {
+        x: Math.floor(Math.random()*canvas.width),
+        y: -650,
+        img: allPresents[Math.floor(Math.random()*allPresents.length)],
+        present: true
+    }, 
+    {
+        x: Math.floor(Math.random()*canvas.width),
+        y: -505,
+        img: noPresents[Math.floor(Math.random()*noPresents.length)],
+        present: false
+    }, 
+     {
+        x: Math.floor(Math.random()*canvas.width),
+        y: -410,
+        img: allPresents[Math.floor(Math.random()*noPresents.length)],
+        present: true
+    },  
+    {
+        x: Math.floor(Math.random()*canvas.width),
+        y: -780,
+        img: allPresents[Math.floor(Math.random()*noPresents.length)],
+        present: true
+    }
 ];
 
 let intervalId = 0;
@@ -137,7 +155,7 @@ function handleStart() {
     animationCount++
 
     //SHOW LEVEL UP 2SECONDS
-    if (score == 5 || score == 10) {
+    if (score == 5 || score == 15) {
         if (animationCount < 120 && showLevelUp) {
             ctx.drawImage (levelUp, 320, 0)
         }
@@ -160,7 +178,7 @@ function handleStart() {
         if(randomObject[i].present == true) {
            if(randomObject[i].y >= santaY && randomObject[i].y <= santaY+200 && (randomObject[i].x >= santaX) && (randomObject[i].x <= santaX + 100)) {
                score ++;
-               if (score == 5 || score == 10) {
+               if (score == 5 || score == 15) {
                    showLevelUp = true
                    animationCount = 0;
                }
@@ -213,7 +231,7 @@ function increaseSpeed(){
         incX = 7
         level = 2
     }
-    if (score >= 10) {
+    if (score >= 15) {
         incY = 5
         incX = 7
         level = 3
@@ -264,7 +282,6 @@ function animateSanta() {
     }
     
 }
-
 
 //RESTART
 function restart(){

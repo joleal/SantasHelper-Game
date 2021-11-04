@@ -8,11 +8,11 @@ body{
     display: block;
     margin-right: auto;
     margin-left: auto;
-    margin-top: 20px;
+    margin-top: 50px;
     margin-bottom: 20px;
 }
 
-.button{
+.startbutton{
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -43,21 +43,50 @@ body{
 
 h1{
     font-size: 40px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
  #gameover-page h1{
-    text-align: center;
-    font-size: 60px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 100px;
  }
  #gameover-page h3{
     text-align: center;
     font-size: 50px;
  }
- #gameover-page img{
+
+.dw{
     display: block;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 50px;
+    margin-bottom: 10px;
+    margin-top: 120px;
     border-radius: 50px;
  }
  
+ .restartbutton{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
+    margin-top: 100px;
+    color: white;
+    text-transform: uppercase;
+    font-weight: bolder;
+    background: #659743;
+    padding: 25px;
+    border-color: white;
+    border-width: 5px;
+    border-radius: 10px;
+    font-size: 20px;
+}
+.side{
+    float: left;
+    margin-top: 240px;
+    margin-left: 100px;
+}
+
