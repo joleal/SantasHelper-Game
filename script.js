@@ -49,8 +49,6 @@ let present10 = new Image();
 present10.src = './images/p10.png';
 let present11 = new Image();
 present11.src = './images/p11.png';
-/*let bonus = new Image();
-bonus.src = './images/pbonus.png';*/
 
 let rock = new Image();
 rock.src = './images/rock-50x50.png';
@@ -279,8 +277,7 @@ function animateSanta() {
         else {
             ctx.drawImage (santaEmptyR, santaX, santaY);
         }
-    }
-    
+    }  
 }
 
 //RESTART
@@ -328,4 +325,4 @@ window.addEventListener('load', () => {
        isLeft = false
    }
    })
-})
+});

@@ -9,11 +9,10 @@ Santa's helper is a Game where the player has to help Santa fill his Santa with 
 - Santa moves to the left and to the right, at the bottom
 - The number of caught presents appear on the screen
 
-
 ## Backlog
 - Add music
-- Difficulty increases after catch 10 presents
-- Level up, where Santa delivers the presents
+- Difficulty increases
+- Level up
 
 ## Data structure
 
