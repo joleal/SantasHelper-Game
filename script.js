@@ -116,7 +116,8 @@ let lives = 3;
 let level = 1;
 
 let animationCount = 0;
-let showLvelUp = false;
+let showLevelUp = false;
+
 //GAME PAGE
 function handleStart() {
     startBtn.style.display = 'none';
@@ -128,8 +129,6 @@ function handleStart() {
     draw();
     animateSanta();
     increaseSpeed();
-    // showLevelup();
-    // stopShow();
     
     ctx.fillStyle = 'black'
     ctx.font = '30px verdana'
@@ -137,16 +136,15 @@ function handleStart() {
     ctx.fillText(`Lives: ${lives}`, 830, 30)
     animationCount++
 
-    if (score == 3 || score == 8) {
-        
-        if (animationCount < 120 && showLvelUp) {
-            ctx.drawImage (levelUp, 300, 10)
+    //SHOW LEVEL UP 2SECONDS
+    if (score == 5 || score == 10) {
+        if (animationCount < 120 && showLevelUp) {
+            ctx.drawImage (levelUp, 320, 0)
         }
         else {
             animationCount = 0
-            showLvelUp = false
-        }
-       
+            showLevelUp = false
+        } 
     }
 
     for (let i = 0; i < randomObject.length; i++) {
@@ -162,8 +160,8 @@ function handleStart() {
         if(randomObject[i].present == true) {
            if(randomObject[i].y >= santaY && randomObject[i].y <= santaY+200 && (randomObject[i].x >= santaX) && (randomObject[i].x <= santaX + 100)) {
                score ++;
-               if (score == 3 || score == 8) {
-                   showLvelUp = true
+               if (score == 5 || score == 10) {
+                   showLevelUp = true
                    animationCount = 0;
                }
                randomObject[i].y = canvas.height + 100
@@ -184,6 +182,9 @@ function handleStart() {
         }
     }
 
+if (level == 3) {
+    level = '3, the hardest!'
+}
 
      //GAMEOVER
     if (gameOver) {   
@@ -207,28 +208,17 @@ function draw() {
 
 //INCREASE SPEED
 function increaseSpeed(){
-    if (score >= 3) {
+    if (score >= 5) {
         incY = 3
         incX = 7
         level = 2
     }
-    if (score >= 8) {
+    if (score >= 10) {
         incY = 5
         incX = 7
         level = 3
     }
 }
-
-//SHOW LEVEL UP
-// let showLevelUp = setInterval(showLevelup, 100);
-// function showLevelup (){
-//     if (score == 3 || score == 8) {
-//         ctx.drawImage (levelUp, 300, 10)
-//     }
-// }
-// function stopShow(){
-//     clearInterval(showLevelUp);
-// }
 
 //ANIMATE SANTA
 function animateSanta() {
