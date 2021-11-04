@@ -59,6 +59,9 @@ log.src = './images/log1.png';
 let pinha = new Image();
 pinha.src = './images/pinha.png'
 
+let levelUp = new Image();
+levelUp.src = './images/levelUp.png'
+
 //AUDIO
 let music = new Audio();
 music.src = './audio/SantasToyFactory.mp3';
@@ -110,7 +113,10 @@ let santaX = 400, santaY = 360, incX = 5;
 let incY = 2;
 let score = 0;
 let lives = 3;
+let level = 1;
 
+let animationCount = 0;
+let showLvelUp = false;
 //GAME PAGE
 function handleStart() {
     startBtn.style.display = 'none';
@@ -121,11 +127,27 @@ function handleStart() {
     music.play()
     draw();
     animateSanta();
+    increaseSpeed();
+    // showLevelup();
+    // stopShow();
     
     ctx.fillStyle = 'black'
     ctx.font = '30px verdana'
     ctx.fillText(`Score: ${score}`, 10, 30)
     ctx.fillText(`Lives: ${lives}`, 830, 30)
+    animationCount++
+
+    if (score == 3 || score == 8) {
+        
+        if (animationCount < 120 && showLvelUp) {
+            ctx.drawImage (levelUp, 300, 10)
+        }
+        else {
+            animationCount = 0
+            showLvelUp = false
+        }
+       
+    }
 
     for (let i = 0; i < randomObject.length; i++) {
 
@@ -140,9 +162,14 @@ function handleStart() {
         if(randomObject[i].present == true) {
            if(randomObject[i].y >= santaY && randomObject[i].y <= santaY+200 && (randomObject[i].x >= santaX) && (randomObject[i].x <= santaX + 100)) {
                score ++;
+               if (score == 3 || score == 8) {
+                   showLvelUp = true
+                   animationCount = 0;
+               }
                randomObject[i].y = canvas.height + 100
+           }
            }        
-        }
+        
        
         //COLLISION WITH NO PRESENT TO GAME OVER
         if(randomObject[i].present == false) {
@@ -155,7 +182,8 @@ function handleStart() {
                 }
             }
         }
-   } 
+    }
+
 
      //GAMEOVER
     if (gameOver) {   
@@ -165,7 +193,7 @@ function handleStart() {
         gamePage.style.display = 'none';
         gameOverPage.style.display = 'block';
         restartBtn.style.display = 'block';
-        finalScore.textContent = `You caught ${score} presents`;  
+        finalScore.textContent = `You caught ${score} presents and reached level ${level}`;  
         gameOver = false;
        }
        else {
@@ -174,19 +202,45 @@ function handleStart() {
 }
 
 function draw() {
-    ctx.drawImage (background, 0, 0);
+    ctx.drawImage (background, 0, 0);    
 }
+
+//INCREASE SPEED
+function increaseSpeed(){
+    if (score >= 3) {
+        incY = 3
+        incX = 7
+        level = 2
+    }
+    if (score >= 8) {
+        incY = 5
+        incX = 7
+        level = 3
+    }
+}
+
+//SHOW LEVEL UP
+// let showLevelUp = setInterval(showLevelup, 100);
+// function showLevelup (){
+//     if (score == 3 || score == 8) {
+//         ctx.drawImage (levelUp, 300, 10)
+//     }
+// }
+// function stopShow(){
+//     clearInterval(showLevelUp);
+// }
 
 //ANIMATE SANTA
 function animateSanta() {
-    if (isLeft && santaX > 0) {
+    if (isLeft && santaX  >= 0) {
         ctx.drawImage(santaEmptyL, santaX, santaY)
         santaX = santaX - incX;
         if(score >= 2){
             ctx.drawImage(santaL, santaX, santaY)
         }
     }
-    else if (isLeft && santaX == 0) {
+    else if (isLeft && santaX <= 0) {
+       
         if (score < 2) {
         ctx.drawImage(santaEmptyL, santaX, santaY)
         }
@@ -194,14 +248,15 @@ function animateSanta() {
         ctx.drawImage(santaL, santaX, santaY)   
         }
     }
-    if (isRight && santaX < canvas.width-santaEmptyR.width) {
+    if (isRight && santaX <= canvas.width-santaEmptyR.width) {
         ctx.drawImage(santaEmptyR, santaX, santaY)
         santaX = santaX + incX;
         if(score >= 2){
         ctx.drawImage(santaR, santaX, santaY)
        }
     }
-    else if (isRight && santaX == canvas.width-santaEmptyR.width) {
+    else if (isRight && santaX >= canvas.width-santaEmptyR.width) {
+     
         if (score < 2) {
         ctx.drawImage(santaEmptyR, santaX, santaY)
         }
@@ -217,7 +272,9 @@ function animateSanta() {
             ctx.drawImage (santaEmptyR, santaX, santaY);
         }
     }
+    
 }
+
 
 //RESTART
 function restart(){
@@ -225,7 +282,9 @@ function restart(){
     gameOver = false
     score = 0
     lives = 3
-    santaX = 400, santaY = 360
+    level = 1
+    santaX = 400, santaY = 360, incX = 5
+    incY = 2
     handleStart()
 }
 
