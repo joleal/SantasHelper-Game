@@ -281,6 +281,7 @@ function restart(){
 window.addEventListener('load', () => {
     gamePage.style.display = 'none'; 
     restartBtn.style.display = 'none';
+    gameOverPage.style.display = 'none'
     startPage.style.display = 'block';   
 
     startBtn.addEventListener('click', () => {

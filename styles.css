@@ -18,8 +18,9 @@ body{
     margin-right: auto;
     color: white;
     text-transform: uppercase;
+    font-weight: bolder;
     background: #859238;
-    padding: 20px;
+    padding: 25px;
     border-color: white;
     border-width: 5px;
     border-radius: 10px;
