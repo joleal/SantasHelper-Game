@@ -92,7 +92,7 @@ let randomObject = [
     },
     {
         x: Math.floor(Math.random()*canvas.width),
-        y: -290,
+        y: -830,
         img: allPresents[Math.floor(Math.random()*allPresents.length)],
         present: true
     },
@@ -116,7 +116,7 @@ let randomObject = [
     },  
     {
         x: Math.floor(Math.random()*canvas.width),
-        y: -780,
+        y: -980,
         img: allPresents[Math.floor(Math.random()*noPresents.length)],
         present: true
     }
