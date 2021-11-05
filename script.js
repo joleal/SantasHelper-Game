@@ -1,3 +1,10 @@
+//CONST
+const MAXOBJECTS = 8;
+const MAXHAZARDS = 3;
+const [STARTSPEEDX, STARTSPEEDY] = [5,2]
+const STARTLIVES = 3;
+const [SPRITEX, SPRITEY, SPRITEW, SPRITEH, LEFTADJUST] = [170,28,384,574, 115];
+
 //CANVAS
 let canvas = document.getElementById("myCanvas");
 let ctx = canvas.getContext("2d");
@@ -11,154 +18,237 @@ let gameOverPage = document.querySelector("#gameover-page");
 //DOM START AND RESTART BUTTONS
 let startBtn = document.querySelector("#start-btn");
 let restartBtn = document.querySelector("#restart");
-
 let finalScore = document.querySelector("#final-score");
 
-//IMAGES
-let background = new Image();
-background.src = "./images/bg.jpg";
+//ASSETS OBJECT
+let images = {};
 
-let santaEmptyL = new Image();
-santaEmptyL.src = "./images/santaemptyL-140x200.png";
-let santaEmptyR = new Image();
-santaEmptyR.src = "./images/santaemptyR-140x200.png";
-let santaL = new Image();
-santaL.src = "./images/santa-140x200lft.png";
-let santaR = new Image();
-santaR.src = "./images/santa-140x200right.png";
+//GAME STATE
+let gameOver, score, lives, level, santaX, santaY, santaSprite, santaDir, left, right, santaImage, incX, incY;
+let intervalId, animationCount, showLevelUp;
+let randomObjects = [];
 
-let present1 = new Image();
-present1.src = "./images/p1.png";
-let present2 = new Image();
-present2.src = "./images/p2.png";
-let present3 = new Image();
-present3.src = "./images/p3.png";
-let present4 = new Image();
-present4.src = "./images/p4.png";
-let present5 = new Image();
-present5.src = "./images/p5.png";
-let present6 = new Image();
-present6.src = "./images/p6.png";
-let present7 = new Image();
-present7.src = "./images/p7.png";
-let present8 = new Image();
-present8.src = "./images/p8.png";
-let present9 = new Image();
-present9.src = "./images/p9.png";
-let present10 = new Image();
-present10.src = "./images/p10.png";
-let present11 = new Image();
-present11.src = "./images/p11.png";
+function start(){
+  loadImages();
 
-let rock = new Image();
-rock.src = "./images/rock-50x50.png";
-let log = new Image();
-log.src = "./images/log1.png";
-let pinha = new Image();
-pinha.src = "./images/pinha.png";
+  //set start variables
+  gameOverPage.style.display = "none";
+  gameOver = false;
+  showLevelUp = false;
+  animationCount = 0;
+  
+  //score
+  score = 0;
+  lives = STARTLIVES;
+  level = 1;
+  
+  //santa
+  santaX = 400; 
+  santaY = 400;
+  santaSprite = 0;
+  santaDir =  1;
+  left = right = false;
+  santaImage = images.santa[0];
+  
+  //Speed
+  [incX, incY] = [STARTSPEEDX, STARTSPEEDY];
+  intervalId = 0;
 
-let levelUp = new Image();
-levelUp.src = "./images/levelUp.png";
+  //Create objects
+  for(let o = 0, hazards = 0 ; o < MAXOBJECTS; o++){
+    let randomObject = 
+    {
+      x: Math.floor(Math.random() * canvas.width),
+      y: Math.floor(Math.random() * MAXOBJECTS * -100) //so they don't start at the same height
+    }
+    if(hazards < MAXHAZARDS){
+      randomObject.img = images.hazards[Math.floor(Math.random() * images.hazards.length)];
+      randomObject.present = false;
+      hazards++;
+    } else {
+      randomObject.img = images.presents[Math.floor(Math.random() * images.presents.length)];
+      randomObject.present = true;
+    }
 
-//AUDIO
-let music = new Audio();
-music.src = "./audio/SantasToyFactory.mp3";
-music.volume = 0.1;
-let auch = new Audio();
-auch.src = "./audio/auch.mp3";
-auch.volume = 0.1;
+    randomObjects.push(randomObject);
+  }
 
-//VARIABLES
-let noPresents = [rock, log, pinha];
-let allPresents = [
-  present1,
-  present2,
-  present3,
-  present4,
-  present5,
-  present6,
-  present7,
-  present8,
-  present9,
-  present10,
-  present11,
-];
-let randomObject = [
-  {
-    x: Math.floor(Math.random() * canvas.width),
-    y: 0,
-    img: noPresents[Math.floor(Math.random() * noPresents.length)],
-    present: false,
-  },
-  {
-    x: Math.floor(Math.random() * canvas.width),
-    y: -100,
-    img: allPresents[Math.floor(Math.random() * allPresents.length)],
-    present: true,
-  },
-  {
-    x: Math.floor(Math.random() * canvas.width),
-    y: -200,
-    img: noPresents[Math.floor(Math.random() * noPresents.length)],
-    present: false,
-  },
-  {
-    x: Math.floor(Math.random() * canvas.width),
-    y: -830,
-    img: allPresents[Math.floor(Math.random() * allPresents.length)],
-    present: true,
-  },
-  {
-    x: Math.floor(Math.random() * canvas.width),
-    y: -650,
-    img: allPresents[Math.floor(Math.random() * allPresents.length)],
-    present: true,
-  },
-  {
-    x: Math.floor(Math.random() * canvas.width),
-    y: -505,
-    img: noPresents[Math.floor(Math.random() * noPresents.length)],
-    present: false,
-  },
-  {
-    x: Math.floor(Math.random() * canvas.width),
-    y: -410,
-    img: allPresents[Math.floor(Math.random() * noPresents.length)],
-    present: true,
-  },
-  {
-    x: Math.floor(Math.random() * canvas.width),
-    y: -980,
-    img: allPresents[Math.floor(Math.random() * noPresents.length)],
-    present: true,
-  },
-];
-
-let intervalId = 0;
-let gameOver = false;
-let isLeft = false,
-  isRight = false;
-let santaX = 400,
-  santaY = 360,
-  incX = 5;
-let incY = 2;
-let score = 0;
-let lives = 3;
-let level = 1;
-
-let animationCount = 0;
-let showLevelUp = false;
-
-//GAME PAGE
-function handleStart() {
   startBtn.style.display = "none";
   startPage.style.display = "none";
   restartBtn.style.display = "none";
   gameOverPage.style.display = "none";
   gamePage.style.display = "block";
-  music.play();
+  images.music.play();
+
+  //start game
+  handleStart();
+}
+
+function loadImages(){
+  //load background
+  if(!images.background){
+    let background = new Image();
+    background.src = "./images/bg.jpg";
+    images.background = background;
+
+    let levelUp = new Image();
+    levelUp.src = "./images/levelUp.png";
+    images.levelUp = levelUp;
+
+    //AUDIO
+    let music = new Audio();
+    music.src = "./audio/SantasToyFactory.mp3";
+    music.volume = 0.1;
+    images.music = music;
+
+    let auch = new Audio();
+    auch.src = "./audio/auch.mp3";
+    auch.volume = 0.1;
+    images.auch = auch;
+  }
+
+  //load santa
+  if(!images.santa){
+    images.santa = [];
+    [
+      './images/Walk (1).png',
+      './images/Walk (2).png',
+      './images/Walk (3).png',
+      './images/Walk (4).png',
+      './images/Walk (5).png',
+      './images/Walk (6).png',
+      './images/Walk (7).png',
+      './images/Walk (8).png',
+      './images/Walk (9).png',
+      './images/Walk (10).png',
+      './images/Walk (11).png',
+      './images/Walk (12).png',
+      './images/Walk (13).png'
+    ].forEach(i => {
+      let santa = new Image();
+      santa.src = i;
+      images.santa.push(santa);
+    });
+  }
+
+  //load presents
+  if(!images.presents){
+    
+    images.presents = [];
+    [
+      './images/p1.png',
+      './images/p2.png',
+      './images/p3.png',
+      './images/p4.png',
+      './images/p5.png',
+      './images/p6.png',
+      './images/p7.png',
+      './images/p8.png',
+      './images/p9.png',
+      './images/p10.png',
+      './images/p11.png'
+    ].forEach(i => {
+      let present = new Image();
+      present.src = i;
+      images.presents.push(present);
+    });
+  }
+
+  //load hazards
+  if(!images.hazards){
+    
+    images.hazards = [];
+    [
+      './images/rock-50x50.png',
+      './images/log1.png',
+      './images/pinha.png'
+    ].forEach(i => {
+      let hazard = new Image();
+      hazard.src = i;
+      images.hazards.push(hazard);
+    });
+  }
+}
+
+//ANIMATE SANTA
+function animateSanta() {
+  //get next sprite
+  if(left || right){
+    santaSprite = (santaSprite + 1) % 13;
+    santaImage = images.santa[santaSprite];
+    
+    //calculate X position
+    if(santaDir == 1){
+      santaX = Math.min(santaX + incX, canvas.width-100);
+    } else {
+      santaX = Math.max(santaX - incX, 0);
+    }
+  }
+  
+  if(santaDir == -1){
+    ctx.scale(-1, 1);
+    ctx.drawImage(santaImage, SPRITEX, SPRITEY, SPRITEW, SPRITEH, -santaX - LEFTADJUST, santaY, SPRITEW * 0.30,SPRITEH * 0.25);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+  }
+  else {
+    ctx.drawImage(santaImage, SPRITEX, SPRITEY, SPRITEW, SPRITEH, santaX, santaY, SPRITEW * 0.30,SPRITEH * 0.25);
+  }
+  
+}
+
+function drawRandomObjects(){
+  randomObjects.forEach(ro => {
+    ctx.drawImage(ro.img, ro.x, ro.y);
+    ro.y = ro.y + incY;
+
+    let resetObject = false;
+
+    //check it hit the floor
+    if(ro.y > canvas.height){
+      resetObject = true;
+    }
+    else if ( //check it hit santa 
+      ro.y >= santaY &&
+      ro.y <= santaY + 200 &&
+      ro.x + ro.img.width/2 >= santaX &&
+      ro.x + ro.img.width/2 <= santaX + 100) 
+    {
+      if(ro.present){ //if present increase score
+        score++;
+        if(score == 5 || score == 15){
+          showLevelUp = true;
+          animationCount = 0;
+        }
+      } else { //if hazard reduce lives
+        images.auch.play();
+        lives--;
+        if (lives == 0) {
+          gameOver = true;
+        }
+      }
+      resetObject = true;
+    }
+
+    //finally if reset object 
+    if(resetObject){
+      ro.x = Math.floor(Math.random() * canvas.width),
+      ro.y = Math.floor(Math.random() * MAXOBJECTS * -100) 
+
+      if(ro.present)
+        ro.img = images.presents[Math.floor(Math.random() * images.presents.length)];
+      else
+        ro.img = images.hazards[Math.floor(Math.random() * images.hazards.length)];
+    }
+  });
+}
+  
+
+//GAME PAGE
+function handleStart() {
+  
   draw();
   animateSanta();
+  drawRandomObjects();
   increaseSpeed();
 
   ctx.fillStyle = "black";
@@ -170,53 +260,10 @@ function handleStart() {
   //SHOW LEVEL UP 2SECONDS
   if (score == 5 || score == 15) {
     if (animationCount < 120 && showLevelUp) {
-      ctx.drawImage(levelUp, 320, 0);
+      ctx.drawImage(images.levelUp, 320, 0);
     } else {
       animationCount = 0;
       showLevelUp = false;
-    }
-  }
-
-  for (let i = 0; i < randomObject.length; i++) {
-    ctx.drawImage(randomObject[i].img, randomObject[i].x, randomObject[i].y);
-    randomObject[i].y = randomObject[i].y + incY;
-
-    if (randomObject[i].y > canvas.height) {
-      randomObject[i].y = -300;
-      randomObject[i].x = [Math.floor(Math.random() * canvas.width)];
-    }
-    //COLLISION WITH PRESENT TO INCREASE SCORE
-    if (randomObject[i].present == true) {
-      if (
-        randomObject[i].y >= santaY &&
-        randomObject[i].y <= santaY + 200 &&
-        randomObject[i].x >= santaX &&
-        randomObject[i].x <= santaX + 100
-      ) {
-        score++;
-        if (score == 5 || score == 15) {
-          showLevelUp = true;
-          animationCount = 0;
-        }
-        randomObject[i].y = canvas.height + 100;
-      }
-    }
-
-    //COLLISION WITH NO PRESENT TO GAME OVER
-    if (randomObject[i].present == false) {
-      if (
-        randomObject[i].y >= santaY &&
-        randomObject[i].y <= santaY + 200 &&
-        randomObject[i].x >= santaX &&
-        randomObject[i].x <= santaX + 100
-      ) {
-        auch.play();
-        lives--;
-        randomObject[i].y = canvas.height + 100;
-        if (lives == 0) {
-          gameOver = true;
-        }
-      }
     }
   }
 
@@ -227,7 +274,7 @@ function handleStart() {
   //GAMEOVER
   if (gameOver) {
     cancelAnimationFrame(intervalId);
-    music.pause();
+    images.music.pause();
     startPage.style.display = "none";
     gamePage.style.display = "none";
     gameOverPage.style.display = "block";
@@ -240,7 +287,7 @@ function handleStart() {
 }
 
 function draw() {
-  ctx.drawImage(background, 0, 0);
+  ctx.drawImage(images.background, 0, 0);
 }
 
 //INCREASE SPEED
@@ -257,54 +304,7 @@ function increaseSpeed() {
   }
 }
 
-//ANIMATE SANTA
-function animateSanta() {
-  if (isLeft && santaX >= 0) {
-    ctx.drawImage(santaEmptyL, santaX, santaY);
-    santaX = santaX - incX;
-    if (score >= 2) {
-      ctx.drawImage(santaL, santaX, santaY);
-    }
-  } else if (isLeft && santaX <= 0) {
-    if (score < 2) {
-      ctx.drawImage(santaEmptyL, santaX, santaY);
-    } else if (score >= 2) {
-      ctx.drawImage(santaL, santaX, santaY);
-    }
-  }
-  if (isRight && santaX <= canvas.width - santaEmptyR.width) {
-    ctx.drawImage(santaEmptyR, santaX, santaY);
-    santaX = santaX + incX;
-    if (score >= 2) {
-      ctx.drawImage(santaR, santaX, santaY);
-    }
-  } else if (isRight && santaX >= canvas.width - santaEmptyR.width) {
-    if (score < 2) {
-      ctx.drawImage(santaEmptyR, santaX, santaY);
-    } else if (score >= 2) {
-      ctx.drawImage(santaR, santaX, santaY);
-    }
-  }
-  if (!isLeft && !isRight) {
-    if (score >= 2) {
-      ctx.drawImage(santaR, santaX, santaY);
-    } else {
-      ctx.drawImage(santaEmptyR, santaX, santaY);
-    }
-  }
-}
 
-//RESTART
-function restart() {
-  gameOverPage.style.display = "none";
-  gameOver = false;
-  score = 0;
-  lives = 3;
-  level = 1;
-  (santaX = 400), (santaY = 360), (incX = 5);
-  incY = 2;
-  handleStart();
-}
 
 window.addEventListener("load", () => {
   gamePage.style.display = "none";
@@ -313,29 +313,30 @@ window.addEventListener("load", () => {
   startPage.style.display = "block";
 
   startBtn.addEventListener("click", () => {
-    handleStart();
+    start();
   });
 
   restartBtn.addEventListener("click", () => {
-    restart();
+    start();
   });
 
   //KEYS
   document.addEventListener("keydown", (event) => {
     if (event.key == "ArrowLeft") {
-      isLeft = true;
-      isRight = false;
+      left = true;
+      santaDir = -1;
     }
     if (event.key == "ArrowRight") {
-      isRight = true;
-      isLeft = false;
+      santaDir = +1;
+      right = true;
     }
   });
   document.addEventListener("keyup", (event) => {
+    if (event.key == "ArrowLeft") {
+      left = false;
+    }
     if (event.key == "ArrowRight") {
-      isRight = false;
-    } else if (event.key == "ArrowLeft") {
-      isLeft = false;
+      right = false;
     }
   });
 });
