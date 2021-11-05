@@ -1,9 +1,12 @@
 //CONST
-const MAXOBJECTS = 8;
-const MAXHAZARDS = 3;
+const MAXOBJECTS = 10;
+const MAXHAZARDS = 4;
 const [STARTSPEEDX, STARTSPEEDY] = [5,2]
-const STARTLIVES = 3;
+const STARTLIVES = 1;
 const [SPRITEX, SPRITEY, SPRITEW, SPRITEH, LEFTADJUST] = [170,28,384,574, 115];
+const DEADSPEED = 5;
+const IDLESPEED = 2;
+const MOVESPEED = 1;
 
 //CANVAS
 let canvas = document.getElementById("myCanvas");
@@ -55,11 +58,12 @@ function start(){
   intervalId = 0;
 
   //Create objects
+  randomObjects = [];
   for(let o = 0, hazards = 0 ; o < MAXOBJECTS; o++){
     let randomObject = 
     {
       x: Math.floor(Math.random() * canvas.width),
-      y: Math.floor(Math.random() * MAXOBJECTS * -100) //so they don't start at the same height
+      y: Math.floor(Math.random() * 6) * -100 //so they don't start at the same height
     }
     if(hazards < MAXHAZARDS){
       randomObject.img = images.hazards[Math.floor(Math.random() * images.hazards.length)];
@@ -131,6 +135,59 @@ function loadImages(){
     });
   }
 
+  //load idle santa
+  if(!images.idleSanta){
+    images.idleSanta = [];
+    [
+      './images/Idle (1).png',
+      './images/Idle (2).png',
+      './images/Idle (3).png',
+      './images/Idle (4).png',
+      './images/Idle (5).png',
+      './images/Idle (6).png',
+      './images/Idle (7).png',
+      './images/Idle (8).png',
+      './images/Idle (9).png',
+      './images/Idle (10).png',
+      './images/Idle (11).png',
+      './images/Idle (12).png',
+      './images/Idle (14).png',
+      './images/Idle (15).png',
+      './images/Idle (16).png'
+    ].forEach(i => {
+      let santa = new Image();
+      santa.src = i;
+      images.idleSanta.push(santa);
+    });
+  }
+
+  //load dead santa
+  if(!images.deadSanta){
+    images.deadSanta = [];
+    [
+      './images/Dead (1).png',
+      './images/Dead (2).png',
+      './images/Dead (3).png',
+      './images/Dead (4).png',
+      './images/Dead (5).png',
+      './images/Dead (6).png',
+      './images/Dead (7).png',
+      './images/Dead (8).png',
+      './images/Dead (9).png',
+      './images/Dead (10).png',
+      './images/Dead (11).png',
+      './images/Dead (12).png',
+      './images/Dead (14).png',
+      './images/Dead (15).png',
+      './images/Dead (16).png',
+      './images/Dead (17).png'
+    ].forEach(i => {
+      let santa = new Image();
+      santa.src = i;
+      images.deadSanta.push(santa);
+    });
+  }
+
   //load presents
   if(!images.presents){
     
@@ -173,32 +230,50 @@ function loadImages(){
 //ANIMATE SANTA
 function animateSanta() {
   //get next sprite
-  if(left || right){
-    santaSprite = (santaSprite + 1) % 13;
-    santaImage = images.santa[santaSprite];
-    
-    //calculate X position
-    if(santaDir == 1){
-      santaX = Math.min(santaX + incX, canvas.width-100);
-    } else {
-      santaX = Math.max(santaX - incX, 0);
+  if(gameOver){
+    santaSprite = santaSprite + 1;
+    santaImage = images.deadSanta[Math.min(Math.floor(santaSprite/DEADSPEED), images.deadSanta.length - 1)];
+
+    if(santaDir == -1){
+      ctx.scale(-1, 1);
+      ctx.drawImage(santaImage, SPRITEX, SPRITEY, santaImage.width - SPRITEX, santaImage.height - SPRITEY, -santaX - LEFTADJUST, santaY, santaImage.width * 0.3, santaImage.height*0.25);
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
     }
-  }
-  
-  if(santaDir == -1){
-    ctx.scale(-1, 1);
-    ctx.drawImage(santaImage, SPRITEX, SPRITEY, SPRITEW, SPRITEH, -santaX - LEFTADJUST, santaY, SPRITEW * 0.30,SPRITEH * 0.25);
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-  }
-  else {
-    ctx.drawImage(santaImage, SPRITEX, SPRITEY, SPRITEW, SPRITEH, santaX, santaY, SPRITEW * 0.30,SPRITEH * 0.25);
+    else 
+      ctx.drawImage(santaImage, SPRITEX, SPRITEY, santaImage.width - SPRITEX, santaImage.height - SPRITEY, santaX, santaY, santaImage.width * 0.3, santaImage.height*0.25);
+  } 
+  else 
+  {
+    if(left || right){
+      santaSprite = (santaSprite + 1) % (images.santa.length * MOVESPEED);
+      santaImage = images.santa[Math.floor(santaSprite/MOVESPEED)];
+      
+      //calculate X position
+      if(santaDir == 1){
+        santaX = Math.min(santaX + incX, canvas.width-100);
+      } else {
+        santaX = Math.max(santaX - incX, 0);
+      }
+    }
+    else {
+      santaSprite = (santaSprite + 1) % (images.idleSanta.length * IDLESPEED);
+      santaImage = images.idleSanta[Math.floor(santaSprite/IDLESPEED)];
+    }
+    
+    if(santaDir == -1){
+      ctx.scale(-1, 1);
+      ctx.drawImage(santaImage, SPRITEX, SPRITEY, SPRITEW, SPRITEH, -santaX - LEFTADJUST, santaY, SPRITEW * 0.30,SPRITEH * 0.25);
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+    }
+    else {
+      ctx.drawImage(santaImage, SPRITEX, SPRITEY, SPRITEW, SPRITEH, santaX, santaY, SPRITEW * 0.30,SPRITEH * 0.25);
+    }
   }
   
 }
 
 function drawRandomObjects(){
   randomObjects.forEach(ro => {
-    ctx.drawImage(ro.img, ro.x, ro.y);
     ro.y = ro.y + incY;
 
     let resetObject = false;
@@ -208,10 +283,11 @@ function drawRandomObjects(){
       resetObject = true;
     }
     else if ( //check it hit santa 
-      ro.y >= santaY &&
-      ro.y <= santaY + 200 &&
+      ro.y + ro.img.height >= santaY &&
+      ro.y + ro.img.height <= santaY + 200 &&
       ro.x + ro.img.width/2 >= santaX &&
-      ro.x + ro.img.width/2 <= santaX + 100) 
+      ro.x + ro.img.width/2 <= santaX + 100 &&
+      !gameOver) 
     {
       if(ro.present){ //if present increase score
         score++;
@@ -224,6 +300,7 @@ function drawRandomObjects(){
         lives--;
         if (lives == 0) {
           gameOver = true;
+          santaSprite = 0;
         }
       }
       resetObject = true;
@@ -239,6 +316,9 @@ function drawRandomObjects(){
       else
         ro.img = images.hazards[Math.floor(Math.random() * images.hazards.length)];
     }
+
+    
+    ctx.drawImage(ro.img, ro.x, ro.y);
   });
 }
   
@@ -272,7 +352,7 @@ function handleStart() {
   }
 
   //GAMEOVER
-  if (gameOver) {
+  if (gameOver && Math.floor(santaSprite/DEADSPEED) >= images.deadSanta.length) {
     cancelAnimationFrame(intervalId);
     images.music.pause();
     startPage.style.display = "none";
@@ -322,11 +402,11 @@ window.addEventListener("load", () => {
 
   //KEYS
   document.addEventListener("keydown", (event) => {
-    if (event.key == "ArrowLeft") {
+    if (event.key == "ArrowLeft" && !gameOver) {
       left = true;
       santaDir = -1;
     }
-    if (event.key == "ArrowRight") {
+    if (event.key == "ArrowRight" && !gameOver) {
       santaDir = +1;
       right = true;
     }
@@ -337,6 +417,10 @@ window.addEventListener("load", () => {
     }
     if (event.key == "ArrowRight") {
       right = false;
+    }
+
+    if(!right && !left && !gameOver){ //movementStopped
+      santaSprite = 0;
     }
   });
 });
